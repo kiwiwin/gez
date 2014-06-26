@@ -1,14 +1,11 @@
 package org.kiwi.resource;
 
-import org.kiwi.domain.Product;
 import org.kiwi.json.ProductRefJson;
 import org.kiwi.persistent.ProductRepository;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,4 +29,9 @@ public class ProductsResource {
                 .collect(Collectors.toList());
     }
 
+    @POST
+    @Consumes
+    public Response createProduct(Form form) {
+        return Response.status(201).build();
+    }
 }

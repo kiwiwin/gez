@@ -10,10 +10,15 @@ import org.kiwi.domain.ProductWithId;
 import org.kiwi.persistent.ProductRepository;
 import org.kiwi.resource.handler.ResourceNotFoundException;
 import org.kiwi.resource.handler.ResourceNotFoundExceptionHandler;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.Form;
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +37,8 @@ public class ProductsResourceTest extends JerseyTest {
     @Mock
     private ProductRepository productRepository;
 
+    @Captor
+    private ArgumentCaptor<Product> argumentProductCaptro;
 
     @Override
     protected Application configure() {
@@ -96,5 +103,21 @@ public class ProductsResourceTest extends JerseyTest {
         assertThat(product2.get("name"), is("banana"));
         assertThat((String) product2.get("uri"), endsWith("products/2"));
 
+    }
+
+    @Test
+    public void should_create_product_status_201() {
+
+        final MultivaluedHashMap<Object, Object> keyValues = new MultivaluedHashMap<>();
+        keyValues.putSingle("name", "apple");
+
+        final Form productForm = new Form();
+
+        final Response response = target("/products")
+                .request()
+                .post(Entity.form(productForm));
+
+
+        assertThat(response.getStatus(), is(201));
     }
 }
