@@ -9,6 +9,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
+import java.util.List;
 
 @Path("/products")
 public class ProductsResource {
@@ -21,4 +22,11 @@ public class ProductsResource {
     public ProductRefJson getProductById(@PathParam("productId") int productId, @Context UriInfo uriInfo) {
         return new ProductRefJson(uriInfo, productRepository.findProductById(productId));
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getAllProducts() {
+        return "";
+    }
+
 }

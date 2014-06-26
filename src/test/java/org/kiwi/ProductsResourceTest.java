@@ -70,4 +70,13 @@ public class ProductsResourceTest extends JerseyTest {
 
         assertThat(response.getStatus(), is(404));
     }
+
+    @Test
+    public void should_get_all_products() {
+        final Response response = target("/products")
+                .request()
+                .get();
+
+        assertThat(response.getStatus(), is(200));
+    }
 }
