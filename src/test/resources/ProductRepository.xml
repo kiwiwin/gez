@@ -15,6 +15,11 @@
 
     <select id="findProductById" resultMap="resultProduct">
         select Products.id as productId, Products.name as productName, Products.description as productDescription
+        from Products where Products.id = #{productId}
+    </select>
+
+    <select id="getAllProducts" resultMap="resultProduct">
+        select Products.id as productId, Products.name as productName, Products.description as productDescription
         from Products
     </select>
 

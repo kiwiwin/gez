@@ -6,7 +6,7 @@ import org.kiwi.domain.Product;
 import java.util.List;
 
 public interface ProductRepository {
-    Product findProductById(int productId);
+    Product findProductById(@Param("productId")int productId);
 
     List<Product> getAllProducts();
 

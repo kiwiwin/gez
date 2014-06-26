@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kiwi.domain.Product;
 
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -35,4 +37,14 @@ public class ProductRepositoryTest {
         assertThat(newProduct.getName(), is("apple"));
     }
 
+    @Test
+    public void should_all_products() {
+        final Product product = new Product("apple", "good");
+        productRepository.createProduct(product);
+
+        final List<Product> products = productRepository.getAllProducts();
+
+        assertThat(products.size(), is(1));
+        assertThat(products.get(0).getName(), is("apple"));
+    }
 }
