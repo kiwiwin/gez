@@ -15,6 +15,11 @@ public class ProductsResource {
     @Inject
     private ProductRepository productRepository;
 
+    @Path("{productId}/prices")
+    public PricesResource getPricesResource() {
+        return new PricesResource();
+    }
+
     @GET
     @Path("{productId}")
     @Produces(MediaType.APPLICATION_JSON)
