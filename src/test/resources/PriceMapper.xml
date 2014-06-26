@@ -22,5 +22,9 @@
         from Prices where Prices.product_id = #{product.id} and Prices.id = #{priceId}
     </select>
 
-
+    <select id="getPrices" resultMap="resultPrice">
+        select Prices.id as id, Prices.price as price, Prices.modified_at as modifiedAt,
+        Prices.modified_by as modifiedBy
+        from Prices where Prices.product_id = #{product.id}
+    </select>
 </mapper>

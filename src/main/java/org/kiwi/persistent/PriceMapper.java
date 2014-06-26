@@ -7,7 +7,7 @@ import org.kiwi.domain.Product;
 import java.util.List;
 
 public interface PriceMapper {
-    List<Price> getPrices(Product any);
+    List<Price> getPrices(@Param("product")Product product);
 
     Price getPrice(@Param("product")Product product, @Param("priceId")int priceId);
 

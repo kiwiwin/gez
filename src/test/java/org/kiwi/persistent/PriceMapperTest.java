@@ -8,6 +8,7 @@ import org.kiwi.domain.Price;
 import org.kiwi.domain.Product;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -45,4 +46,18 @@ public class PriceMapperTest {
         assertThat(newPrice.getModifiedBy(), is("kiwi"));
     }
 
+    @Test
+    public void should_get_all_prices() {
+        final Product product = new Product("apple", "good");
+        productRepository.createProduct(product);
+        final Price price = new Price(120, new Timestamp(114, 1, 1, 0, 0, 0, 0), "kiwi");
+        priceMapper.createPrice(product, price);
+        priceMapper.createPrice(product, new Price(130, new Timestamp(114, 1, 1, 0, 0, 0, 0), "kiwi"));
+
+        final List<Price> prices = priceMapper.getPrices(product);
+
+        assertThat(prices.size(), is(2));
+        assertThat(prices.get(0).getPrice(), is(120));
+        assertThat(prices.get(0).getModifiedBy(), is("kiwi"));
+    }
 }
