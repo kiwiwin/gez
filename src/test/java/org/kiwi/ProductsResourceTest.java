@@ -6,6 +6,7 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kiwi.domain.Product;
+import org.kiwi.persistent.PriceMapper;
 import org.kiwi.persistent.ProductRepository;
 import org.kiwi.resource.handler.ResourceNotFoundException;
 import org.kiwi.resource.handler.ResourceNotFoundExceptionHandler;
@@ -34,6 +35,9 @@ public class ProductsResourceTest extends JerseyTest {
     @Mock
     private ProductRepository productRepository;
 
+    @Mock
+    private PriceMapper priceMapper;
+
     @Captor
     private ArgumentCaptor<Product> argumentProductCaptor;
 
@@ -46,6 +50,7 @@ public class ProductsResourceTest extends JerseyTest {
                     @Override
                     protected void configure() {
                         bind(productRepository).to(ProductRepository.class);
+                        bind(priceMapper).to(PriceMapper.class);
                     }
                 });
     }
@@ -62,7 +67,7 @@ public class ProductsResourceTest extends JerseyTest {
 
         final Map product = response.readEntity(Map.class);
 
-        assertThat((String) product.get("name"), is("apple"));
+        assertThat(product.get("name"), is("apple"));
         assertThat((String) product.get("uri"), endsWith("products/1"));
     }
 
