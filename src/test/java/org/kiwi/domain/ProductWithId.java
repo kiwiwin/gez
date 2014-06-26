@@ -6,4 +6,10 @@ public class ProductWithId {
         product.id = id;
         return product;
     }
+
+    public static Product productWithIdAndPrice(int id, Product product, Price currentPrice) {
+        product.id = id;
+        product.currentPrice = currentPrice;
+        return product;
+    }
 }

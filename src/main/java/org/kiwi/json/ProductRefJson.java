@@ -24,4 +24,8 @@ public class ProductRefJson {
     public String getUri() {
         return uriInfo.getBaseUri() + "products/" + product.getId();
     }
+
+    public int getCurrentPrice() {
+        return product.getCurrentPrice().getPrice();
+    }
 }

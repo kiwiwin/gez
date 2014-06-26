@@ -5,6 +5,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kiwi.domain.Price;
 import org.kiwi.domain.Product;
 import org.kiwi.persistent.PriceMapper;
 import org.kiwi.persistent.ProductRepository;
@@ -17,14 +18,17 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.*;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.StringEndsWith.endsWith;
 import static org.kiwi.domain.ProductWithId.productWithId;
+import static org.kiwi.domain.ProductWithId.productWithIdAndPrice;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -57,7 +61,7 @@ public class ProductsResourceTest extends JerseyTest {
 
     @Test
     public void should_get_product_by_id() {
-        when(productRepository.findProductById(eq(1))).thenReturn(productWithId(1, new Product("apple", "good")));
+        when(productRepository.findProductById(eq(1))).thenReturn(productWithIdAndPrice(1, new Product("apple", "good"), new Price(120, new Timestamp(113, 1, 1, 0, 0, 0, 0), "kiwi")));
 
         final Response response = target("/products/1")
                 .request()
@@ -70,6 +74,7 @@ public class ProductsResourceTest extends JerseyTest {
         assertThat(product.get("name"), is("apple"));
         assertThat(product.get("description"), is("good"));
         assertThat((String) product.get("uri"), endsWith("products/1"));
+        assertThat(product.get("currentPrice"), is(120));
     }
 
     @Test

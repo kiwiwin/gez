@@ -2,9 +2,9 @@ package org.kiwi.domain;
 
 public class Product {
     int id;
+    Price currentPrice;
     private String name;
     private String description;
-    private Price currentPrice;
 
     public Product() {
 
