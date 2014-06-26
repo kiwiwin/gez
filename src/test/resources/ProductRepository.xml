@@ -27,8 +27,11 @@
     </select>
 
     <select id="getAllProducts" resultMap="resultProduct">
-        select Products.id as productId, Products.name as productName, Products.description as productDescription
-        from Products
+        select Products.id as productId, Products.name as productName, Products.description as productDescription,
+        Prices.price as pricePrice, Prices.modified_at as priceModifiedAt, Prices.modified_by as priceModifiedBy
+        from Products left join Prices on Products.id = Prices.product_id
+        left join
+        (select p.id as pId, max(pri.modified_at) as priceModifiedAt from Products p left join Prices pri on p.id = pri.product_id group by p.id) as maxIds on Products.id = maxIds.pId
     </select>
 
 </mapper>

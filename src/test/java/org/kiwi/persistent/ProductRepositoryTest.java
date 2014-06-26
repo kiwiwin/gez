@@ -49,10 +49,13 @@ public class ProductRepositoryTest {
     public void should_all_products() {
         final Product product = new Product("apple", "good");
         productRepository.createProduct(product);
+        priceMapper.createPrice(product, new Price(120, new Timestamp(114, 1, 1, 0, 0, 0, 0), "kiwi"));
+        priceMapper.createPrice(product, new Price(130, new Timestamp(114, 1, 2, 0, 0, 0, 0), "kiwi"));
 
         final List<Product> products = productRepository.getAllProducts();
 
         assertThat(products.size(), is(1));
         assertThat(products.get(0).getName(), is("apple"));
+        assertThat(products.get(0).getCurrentPrice().getPrice(), is(130));
     }
 }
