@@ -25,7 +25,7 @@ public class ProductRefJson {
         return uriInfo.getBaseUri() + "products/" + product.getId();
     }
 
-    public int getCurrentPrice() {
-        return product.getCurrentPrice().getPrice();
+    public PriceRefJson getCurrentPrice() {
+        return new PriceRefJson(uriInfo, product, product.getCurrentPrice());
     }
 }

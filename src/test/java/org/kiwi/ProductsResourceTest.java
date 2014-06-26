@@ -74,7 +74,9 @@ public class ProductsResourceTest extends JerseyTest {
         assertThat(product.get("name"), is("apple"));
         assertThat(product.get("description"), is("good"));
         assertThat((String) product.get("uri"), endsWith("products/1"));
-        assertThat(product.get("currentPrice"), is(120));
+        final Map currentPrice = (Map) product.get("currentPrice");
+        assertThat(currentPrice.get("price"), is(120));
+        assertThat(currentPrice.get("modifiedBy"), is("kiwi"));
     }
 
     @Test
@@ -91,7 +93,8 @@ public class ProductsResourceTest extends JerseyTest {
     @Test
     public void should_get_all_products() {
         when(productRepository.getAllProducts())
-                .thenReturn(Arrays.asList(productWithId(1, new Product("apple", "good")), productWithId(2, new Product("banana", "good"))));
+                .thenReturn(Arrays.asList(productWithIdAndPrice(1, new Product("apple", "good"), new Price(120, new Timestamp(113, 1, 1, 0, 0, 0, 0), "kiwi")),
+                        productWithIdAndPrice(2, new Product("banana", "good"), new Price(120, new Timestamp(113, 1, 1, 0, 0, 0, 0), "kiwi"))));
 
         final Response response = target("/products")
                 .request()
