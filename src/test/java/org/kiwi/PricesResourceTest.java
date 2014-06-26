@@ -10,11 +10,13 @@ import org.kiwi.domain.Product;
 import org.kiwi.persistent.PriceMapper;
 import org.kiwi.persistent.ProductRepository;
 import org.kiwi.resource.handler.ResourceNotFoundExceptionHandler;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.*;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +38,12 @@ public class PricesResourceTest extends JerseyTest {
 
     @Mock
     private PriceMapper priceMapper;
+
+    @Captor
+    private ArgumentCaptor<Product> productArgumentCaptor;
+
+    @Captor
+    private ArgumentCaptor<Price> priceArgumentCaptor;
 
     @Override
     protected Application configure() {
@@ -90,5 +98,21 @@ public class PricesResourceTest extends JerseyTest {
         assertThat(price.get("modifiedAt"), is(new Timestamp(114, 1, 1, 0, 0, 0, 0).toString()));
         assertThat(price.get("modifiedBy"), is("kiwi"));
         assertThat((String)price.get("uri"), endsWith("products/1/prices/1"));
+    }
+
+    @Test
+    public void should_create_price() {
+        when(productRepository.findProductById(eq(1))).thenReturn(productWithId(1, new Product("apple")));
+
+        final MultivaluedMap<String, String> keyValues = new MultivaluedHashMap<>();
+
+
+        final Form priceForm = new Form(keyValues);
+
+        final Response response = target("/products/1/prices")
+                .request()
+                .post(Entity.form(priceForm));
+
+        assertThat(response.getStatus(), is(201));
     }
 }

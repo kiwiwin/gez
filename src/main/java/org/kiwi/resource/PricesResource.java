@@ -4,13 +4,8 @@ import org.kiwi.domain.Product;
 import org.kiwi.json.PriceRefJson;
 import org.kiwi.persistent.PriceMapper;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,5 +31,11 @@ public class PricesResource {
     @Produces(MediaType.APPLICATION_JSON)
     public PriceRefJson getPrice(@PathParam("priceId") int priceId, @Context UriInfo uriInfo) {
         return new PriceRefJson(uriInfo, product, priceMapper.getPrice(product, priceId));
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response createPrice(Form form) {
+        return Response.status(201).build();
     }
 }
