@@ -4,6 +4,7 @@ public class Product {
     int id;
     private String name;
     private String description;
+    private Price currentPrice;
 
     public Product() {
 
@@ -24,5 +25,9 @@ public class Product {
 
     public String getDescription() {
         return description;
+    }
+
+    public Price getCurrentPrice() {
+        return currentPrice;
     }
 }

@@ -7,6 +7,12 @@
         <id property="id" column="productId"/>
         <result property="name" column="productName"/>
         <result property="description" column="productDescription"/>
+        <association property="currentPrice" javaType="org.kiwi.domain.Price">
+            <id property="id" column="priceId"/>
+            <result property="price" column="pricePrice"/>
+            <result property="modifiedAt" column="priceModifiedAt"/>
+            <result property="modifiedBy" column="priceModifiedBy"/>
+        </association>
     </resultMap>
 
     <insert id="createProduct" parameterType="org.kiwi.domain.Product" keyProperty="product.id" useGeneratedKeys="true">
@@ -14,8 +20,10 @@
     </insert>
 
     <select id="findProductById" resultMap="resultProduct">
-        select Products.id as productId, Products.name as productName, Products.description as productDescription
-        from Products where Products.id = #{productId}
+        select Products.id as productId, Products.name as productName, Products.description as productDescription,
+        Prices.price as pricePrice, Prices.modified_at as priceModifiedAt, Prices.modified_by as priceModifiedBy
+        from Products left join Prices on Products.id = Prices.product_id
+        where Products.id = #{productId} and Prices.modified_at = (select max(Prices.modified_at) from Prices where product_id = #{productId} group by product_id)
     </select>
 
     <select id="getAllProducts" resultMap="resultProduct">
