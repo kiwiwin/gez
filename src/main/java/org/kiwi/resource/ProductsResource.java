@@ -6,7 +6,9 @@ import org.kiwi.persistent.ProductRepository;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 @Path("/products")
 public class ProductsResource {
@@ -16,7 +18,7 @@ public class ProductsResource {
     @GET
     @Path("{productId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ProductRefJson getProductById(@PathParam("productId") int productId) {
-        return new ProductRefJson(productRepository.findProductById(productId));
+    public ProductRefJson getProductById(@PathParam("productId") int productId, @Context UriInfo uriInfo) {
+        return new ProductRefJson(uriInfo, productRepository.findProductById(productId));
     }
 }

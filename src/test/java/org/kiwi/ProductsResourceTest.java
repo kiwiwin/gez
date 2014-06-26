@@ -6,6 +6,7 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kiwi.domain.Product;
+import org.kiwi.domain.ProductWithId;
 import org.kiwi.persistent.ProductRepository;
 import org.kiwi.resource.handler.ResourceNotFoundException;
 import org.kiwi.resource.handler.ResourceNotFoundExceptionHandler;
@@ -19,6 +20,7 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.StringEndsWith.endsWith;
+import static org.kiwi.domain.ProductWithId.productWithId;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -44,7 +46,7 @@ public class ProductsResourceTest extends JerseyTest {
 
     @Test
     public void should_get_product_by_id() {
-        when(productRepository.findProductById(eq(1))).thenReturn(new Product("apple"));
+        when(productRepository.findProductById(eq(1))).thenReturn(productWithId(1, new Product("apple")));
 
         final Response response = target("/products/1")
                 .request()
@@ -55,7 +57,7 @@ public class ProductsResourceTest extends JerseyTest {
         final Map product = response.readEntity(Map.class);
 
         assertThat((String) product.get("name"), is("apple"));
-        assertThat((String) product.get("uri"), endsWith("/products/1"));
+        assertThat((String) product.get("uri"), endsWith("products/1"));
     }
 
     @Test
