@@ -1,11 +1,13 @@
 package org.kiwi.resource;
 
+import org.kiwi.domain.Price;
 import org.kiwi.domain.Product;
 import org.kiwi.json.PriceRefJson;
 import org.kiwi.persistent.PriceMapper;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +38,17 @@ public class PricesResource {
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response createPrice(Form form) {
+        priceMapper.createPrice(product, getPriceFromForm(form));
         return Response.status(201).build();
     }
+
+    private Price getPriceFromForm(Form form) {
+        final MultivaluedMap<String, String> map = form.asMap();
+        final Timestamp modifiedAt = Timestamp.valueOf(map.getFirst("modifiedAt"));
+        final String modifiedBy = map.getFirst("modifiedBy");
+        final int price = Integer.valueOf(map.getFirst("price"));
+
+        return new Price(price, modifiedAt, modifiedBy);
+    }
+
 }

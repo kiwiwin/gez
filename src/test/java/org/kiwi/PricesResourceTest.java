@@ -29,6 +29,7 @@ import static org.kiwi.domain.PriceWithId.priceWithId;
 import static org.kiwi.domain.ProductWithId.productWithId;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -105,6 +106,9 @@ public class PricesResourceTest extends JerseyTest {
         when(productRepository.findProductById(eq(1))).thenReturn(productWithId(1, new Product("apple")));
 
         final MultivaluedMap<String, String> keyValues = new MultivaluedHashMap<>();
+        keyValues.putSingle("price", "120");
+        keyValues.putSingle("modifiedAt", new Timestamp(114, 1, 1, 0, 0, 0, 0).toString());
+        keyValues.putSingle("modifiedBy", "kiwi");
 
 
         final Form priceForm = new Form(keyValues);
@@ -114,5 +118,10 @@ public class PricesResourceTest extends JerseyTest {
                 .post(Entity.form(priceForm));
 
         assertThat(response.getStatus(), is(201));
+
+        verify(priceMapper).createPrice(productArgumentCaptor.capture(), priceArgumentCaptor.capture());
+
+        assertThat(productArgumentCaptor.getValue().getName(), is("apple"));
+        assertThat(priceArgumentCaptor.getValue().getPrice(), is(120));
     }
 }
