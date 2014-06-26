@@ -3,10 +3,14 @@ package org.kiwi.domain;
 import java.sql.Timestamp;
 
 public class Price {
-    private final int price;
-    private final Timestamp modifiedAt;
-    private final String modifiedBy;
     int id;
+    private int price;
+    private Timestamp modifiedAt;
+    private String modifiedBy;
+
+    public Price() {
+
+    }
 
     public Price(int price, Timestamp modifiedAt, String modifiedBy) {
         this.price = price;
