@@ -32,9 +32,10 @@ public class ProductsResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response createProduct(Form form) {
-        final int updated = productRepository.createProduct(getProduct(form));
-        return Response.status(201).build();
+    public Response createProduct(Form form, @Context UriInfo uriInfo) {
+        final Product product = getProduct(form);
+        productRepository.createProduct(product);
+        return Response.status(201).header("location", new ProductRefJson(uriInfo, product)).build();
     }
 
     private Product getProduct(Form form) {
