@@ -57,7 +57,7 @@ public class ProductsResourceTest extends JerseyTest {
 
     @Test
     public void should_get_product_by_id() {
-        when(productRepository.findProductById(eq(1))).thenReturn(productWithId(1, new Product("apple")));
+        when(productRepository.findProductById(eq(1))).thenReturn(productWithId(1, new Product("apple", "good")));
 
         final Response response = target("/products/1")
                 .request()
@@ -68,6 +68,7 @@ public class ProductsResourceTest extends JerseyTest {
         final Map product = response.readEntity(Map.class);
 
         assertThat(product.get("name"), is("apple"));
+        assertThat(product.get("description"), is("good"));
         assertThat((String) product.get("uri"), endsWith("products/1"));
     }
 
@@ -85,7 +86,7 @@ public class ProductsResourceTest extends JerseyTest {
     @Test
     public void should_get_all_products() {
         when(productRepository.getAllProducts())
-                .thenReturn(Arrays.asList(productWithId(1, new Product("apple")), productWithId(2, new Product("banana"))));
+                .thenReturn(Arrays.asList(productWithId(1, new Product("apple", "good")), productWithId(2, new Product("banana", "good"))));
 
         final Response response = target("/products")
                 .request()

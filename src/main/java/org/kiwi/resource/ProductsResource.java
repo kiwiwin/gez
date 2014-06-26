@@ -49,6 +49,6 @@ public class ProductsResource {
 
     private Product getProduct(Form form) {
         final MultivaluedMap<String, String> map = form.asMap();
-        return new Product(map.getFirst("name"));
+        return new Product(map.getFirst("name"), "good");
     }
 }

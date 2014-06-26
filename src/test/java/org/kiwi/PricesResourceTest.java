@@ -62,7 +62,7 @@ public class PricesResourceTest extends JerseyTest {
 
     @Test
     public void should_get_all_prices_of_a_product() {
-        when(productRepository.findProductById(eq(1))).thenReturn(productWithId(1, new Product("apple")));
+        when(productRepository.findProductById(eq(1))).thenReturn(productWithId(1, new Product("apple", "good")));
         when(priceMapper.getPrices(any(Product.class))).thenReturn(Arrays.asList(priceWithId(1, new Price(120, new Timestamp(114, 1, 1, 0, 0, 0, 0), "kiwi"))));
 
         final Response response = target("/products/1/prices")
@@ -83,7 +83,7 @@ public class PricesResourceTest extends JerseyTest {
 
     @Test
     public void should_get_price_of_a_product() {
-        when(productRepository.findProductById(eq(1))).thenReturn(productWithId(1, new Product("apple")));
+        when(productRepository.findProductById(eq(1))).thenReturn(productWithId(1, new Product("apple", "good")));
         when(priceMapper.getPrice(any(Product.class), eq(1))).thenReturn(priceWithId(1, new Price(120, new Timestamp(114, 1, 1, 0, 0, 0, 0), "kiwi")));
 
 
@@ -103,7 +103,7 @@ public class PricesResourceTest extends JerseyTest {
 
     @Test
     public void should_create_price() {
-        when(productRepository.findProductById(eq(1))).thenReturn(productWithId(1, new Product("apple")));
+        when(productRepository.findProductById(eq(1))).thenReturn(productWithId(1, new Product("apple", "good")));
 
         final MultivaluedMap<String, String> keyValues = new MultivaluedHashMap<>();
         keyValues.putSingle("price", "120");
