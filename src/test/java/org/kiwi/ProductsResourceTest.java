@@ -15,6 +15,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 
+import java.util.Map;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.eq;
@@ -42,14 +44,17 @@ public class ProductsResourceTest extends JerseyTest {
 
     @Test
     public void should_get_product_by_id() {
-        when(productRepository.findProductById(eq(1))).thenReturn(new Product());
-
+        when(productRepository.findProductById(eq(1))).thenReturn(new Product("apple"));
 
         final Response response = target("/products/1")
                 .request()
                 .get();
 
         assertThat(response.getStatus(), is(200));
+
+        final Map product = response.readEntity(Map.class);
+
+        assertThat((String)product.get("name"), is("apple"));
     }
 
     @Test
