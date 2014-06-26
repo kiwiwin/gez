@@ -6,7 +6,6 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kiwi.domain.Product;
-import org.kiwi.domain.ProductWithId;
 import org.kiwi.persistent.ProductRepository;
 import org.kiwi.resource.handler.ResourceNotFoundException;
 import org.kiwi.resource.handler.ResourceNotFoundExceptionHandler;
@@ -16,10 +15,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +25,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.StringEndsWith.endsWith;
 import static org.kiwi.domain.ProductWithId.productWithId;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
@@ -38,7 +35,7 @@ public class ProductsResourceTest extends JerseyTest {
     private ProductRepository productRepository;
 
     @Captor
-    private ArgumentCaptor<Product> argumentProductCaptro;
+    private ArgumentCaptor<Product> argumentProductCaptor;
 
     @Override
     protected Application configure() {
@@ -107,17 +104,20 @@ public class ProductsResourceTest extends JerseyTest {
 
     @Test
     public void should_create_product_status_201() {
+        argumentProductCaptor = ArgumentCaptor.forClass(Product.class);
 
-        final MultivaluedHashMap<Object, Object> keyValues = new MultivaluedHashMap<>();
+        final MultivaluedMap<String, String> keyValues = new MultivaluedHashMap<>();
         keyValues.putSingle("name", "apple");
 
-        final Form productForm = new Form();
+        final Form productForm = new Form(keyValues);
 
         final Response response = target("/products")
                 .request()
                 .post(Entity.form(productForm));
 
+        verify(productRepository).createProduct(argumentProductCaptor.capture());
 
         assertThat(response.getStatus(), is(201));
+        assertThat(argumentProductCaptor.getValue().getName(), is("apple"));
     }
 }

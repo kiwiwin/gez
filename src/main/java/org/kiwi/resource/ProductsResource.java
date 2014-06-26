@@ -1,5 +1,6 @@
 package org.kiwi.resource;
 
+import org.kiwi.domain.Product;
 import org.kiwi.json.ProductRefJson;
 import org.kiwi.persistent.ProductRepository;
 
@@ -30,8 +31,14 @@ public class ProductsResource {
     }
 
     @POST
-    @Consumes
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response createProduct(Form form) {
+        final int updated = productRepository.createProduct(getProduct(form));
         return Response.status(201).build();
+    }
+
+    private Product getProduct(Form form) {
+        final MultivaluedMap<String, String> map = form.asMap();
+        return new Product(map.getFirst("name"));
     }
 }

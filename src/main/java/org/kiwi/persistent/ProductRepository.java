@@ -8,4 +8,6 @@ public interface ProductRepository {
     Product findProductById(int productId);
 
     List<Product> getAllProducts();
+
+    int createProduct(Product product);
 }
