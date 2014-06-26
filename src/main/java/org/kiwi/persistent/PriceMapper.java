@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface PriceMapper {
     List<Price> getPrices(Product any);
+
+    Price getPrice(Product product);
 }

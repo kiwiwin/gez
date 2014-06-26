@@ -7,6 +7,8 @@ import org.kiwi.json.PriceRefJson;
 import org.kiwi.persistent.PriceMapper;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -29,5 +31,11 @@ public class PricesResource {
         return priceMapper.getPrices(product).stream()
                 .map(price -> new PriceRefJson(uriInfo, product, price))
                 .collect(Collectors.toList());
+    }
+
+    @GET
+    @Path("{priceId}")
+    public String getPrice(@PathParam("priceId") int priceId) {
+        return "";
     }
 }
