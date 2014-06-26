@@ -75,7 +75,7 @@ public class PricesResourceTest extends JerseyTest {
     @Test
     public void should_get_price_of_a_product() {
         when(productRepository.findProductById(eq(1))).thenReturn(productWithId(1, new Product("apple")));
-        when(priceMapper.getPrice(any(Product.class))).thenReturn(priceWithId(1, new Price(120, new Timestamp(114, 1, 1, 0, 0, 0, 0), "kiwi")));
+        when(priceMapper.getPrice(any(Product.class), eq(1))).thenReturn(priceWithId(1, new Price(120, new Timestamp(114, 1, 1, 0, 0, 0, 0), "kiwi")));
 
 
         final Response response = target("/products/1/prices/1")
@@ -84,5 +84,11 @@ public class PricesResourceTest extends JerseyTest {
 
         assertThat(response.getStatus(), is(200));
 
+        final Map price = response.readEntity(Map.class);
+
+        assertThat(price.get("price"), is(120));
+        assertThat(price.get("modifiedAt"), is(new Timestamp(114, 1, 1, 0, 0, 0, 0).toString()));
+        assertThat(price.get("modifiedBy"), is("kiwi"));
+        assertThat((String)price.get("uri"), endsWith("products/1/prices/1"));
     }
 }

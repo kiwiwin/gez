@@ -1,7 +1,5 @@
 package org.kiwi.resource;
 
-import org.jvnet.hk2.internal.Collector;
-import org.kiwi.domain.Price;
 import org.kiwi.domain.Product;
 import org.kiwi.json.PriceRefJson;
 import org.kiwi.persistent.PriceMapper;
@@ -35,7 +33,8 @@ public class PricesResource {
 
     @GET
     @Path("{priceId}")
-    public String getPrice(@PathParam("priceId") int priceId) {
-        return "";
+    @Produces(MediaType.APPLICATION_JSON)
+    public PriceRefJson getPrice(@PathParam("priceId") int priceId, @Context UriInfo uriInfo) {
+        return new PriceRefJson(uriInfo, product, priceMapper.getPrice(product, priceId));
     }
 }
