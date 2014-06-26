@@ -18,8 +18,10 @@ import javax.ws.rs.core.Response;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.StringEndsWith.endsWith;
 import static org.junit.Assert.assertThat;
 import static org.kiwi.domain.PriceWithId.priceWithId;
 import static org.kiwi.domain.ProductWithId.productWithId;
@@ -62,5 +64,11 @@ public class PricesResourceTest extends JerseyTest {
         final List prices = response.readEntity(List.class);
 
         assertThat(prices.size(), is(1));
+
+        final Map price = (Map) prices.get(0);
+        assertThat(price.get("price"), is(120));
+        assertThat(price.get("modifiedAt"), is(new Timestamp(114, 1, 1, 0, 0, 0, 0).toString()));
+        assertThat(price.get("modifiedBy"), is("kiwi"));
+        assertThat((String)price.get("uri"), endsWith("products/1/prices/1"));
     }
 }
