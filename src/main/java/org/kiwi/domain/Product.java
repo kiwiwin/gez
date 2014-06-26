@@ -2,8 +2,12 @@ package org.kiwi.domain;
 
 public class Product {
     int id;
-    private final String name;
-    private final String description;
+    private String name;
+    private String description;
+
+    public Product() {
+
+    }
 
     public Product(String name, String description) {
         this.name = name;

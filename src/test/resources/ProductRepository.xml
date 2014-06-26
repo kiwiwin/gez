@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kiwi.persistent.ProductRepository">
+    <resultMap id="resultProduct" type="org.kiwi.domain.Product">
+        <id property="id" column="productId"/>
+        <result property="name" column="productName"/>
+        <result property="description" column="productDescription"/>
+    </resultMap>
+
+    <insert id="createProduct" parameterType="org.kiwi.domain.Product" keyProperty="product.id" useGeneratedKeys="true">
+        insert into Products (name, description) values (#{product.name}, #{product.description});
+    </insert>
+
+    <select id="findProductById" resultMap="resultProduct">
+        select Products.id as productId, Products.name as productName, Products.description as productDescription
+        from Products
+    </select>
+
+</mapper>
