@@ -25,8 +25,8 @@ public class ProductsResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAllProducts() {
-        return "";
+    public List<Product> getAllProducts() {
+        return productRepository.getAllProducts();
     }
 
 }

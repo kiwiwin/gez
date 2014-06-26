@@ -15,6 +15,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -73,10 +75,17 @@ public class ProductsResourceTest extends JerseyTest {
 
     @Test
     public void should_get_all_products() {
+        when(productRepository.getAllProducts())
+                .thenReturn(Arrays.asList(productWithId(1, new Product("apple")), productWithId(2, new Product("banana"))));
+
         final Response response = target("/products")
                 .request()
                 .get();
 
         assertThat(response.getStatus(), is(200));
+
+        final List products = response.readEntity(List.class);
+
+        assertThat(products.size(), is(2));
     }
 }
