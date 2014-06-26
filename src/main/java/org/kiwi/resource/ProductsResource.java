@@ -10,6 +10,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/products")
 public class ProductsResource {
@@ -25,8 +26,10 @@ public class ProductsResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Product> getAllProducts() {
-        return productRepository.getAllProducts();
+    public List<ProductRefJson> getAllProducts(@Context UriInfo uriInfo) {
+        return productRepository.getAllProducts().stream()
+                .map(product -> new ProductRefJson(uriInfo, product))
+                .collect(Collectors.toList());
     }
 
 }

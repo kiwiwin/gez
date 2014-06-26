@@ -87,5 +87,14 @@ public class ProductsResourceTest extends JerseyTest {
         final List products = response.readEntity(List.class);
 
         assertThat(products.size(), is(2));
+
+        final Map product = (Map) products.get(0);
+        assertThat(product.get("name"), is("apple"));
+        assertThat((String) product.get("uri"), endsWith("products/1"));
+
+        final Map product2 = (Map) products.get(1);
+        assertThat(product2.get("name"), is("banana"));
+        assertThat((String) product2.get("uri"), endsWith("products/2"));
+
     }
 }
