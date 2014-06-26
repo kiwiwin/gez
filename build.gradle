@@ -1,0 +1,64 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "http://repo.spring.io/libs-snapshot" }
+    }
+    dependencies {
+        classpath "org.flywaydb:flyway-gradle-plugin:3.0"
+        classpath 'postgresql:postgresql:9.1-901.jdbc4'
+    }
+}
+
+apply plugin: 'flyway'
+apply plugin: 'idea'
+apply plugin: 'java'
+
+flyway {
+    driver = 'org.postgresql.Driver'
+    user = 'postgres'
+    password = 'postgres'
+    url = 'jdbc:postgresql://localhost:5432/wen'
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    jerseyVersion = '2.9'
+    mockitoVersion = '1.9.5'
+    junitVersion = '4.11'
+    jacksonVersion = "1.9.13"
+}
+
+
+dependencies {
+    compile 'javax.ws.rs:javax.ws.rs-api:2.0'
+
+    compile "cglib:cglib:3.1"
+
+    compile "org.glassfish.jersey.core:jersey-server:$jerseyVersion"
+    compile "org.glassfish.jersey.containers:jersey-container-grizzly2-http:$jerseyVersion"
+    compile "org.glassfish.jersey.containers:jersey-container-servlet:$jerseyVersion"
+
+    compile "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion"
+
+    compile "org.mybatis:mybatis:3.2.7"
+
+    testCompile "org.glassfish.jersey.test-framework:jersey-test-framework-core:$jerseyVersion"
+    testCompile "org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-grizzly2:$jerseyVersion"
+
+
+    runtime 'postgresql:postgresql:9.1-901.jdbc4'
+
+
+    testCompile "org.mockito:mockito-all:$mockitoVersion"
+    testCompile "junit:junit:$junitVersion"
+
+}
+
+
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
