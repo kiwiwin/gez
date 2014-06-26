@@ -1,6 +1,7 @@
 package org.kiwi.resource;
 
 import org.kiwi.domain.Product;
+import org.kiwi.json.ProductRefJson;
 import org.kiwi.persistent.ProductRepository;
 
 import javax.inject.Inject;
@@ -15,8 +16,7 @@ public class ProductsResource {
     @GET
     @Path("{productId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Product getProductById(@PathParam("productId") int productId) {
-        final Product product = productRepository.findProductById(productId);
-        return product;
+    public ProductRefJson getProductById(@PathParam("productId") int productId) {
+        return new ProductRefJson(productRepository.findProductById(productId));
     }
 }

@@ -14,11 +14,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
-
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.StringEndsWith.endsWith;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -54,7 +54,8 @@ public class ProductsResourceTest extends JerseyTest {
 
         final Map product = response.readEntity(Map.class);
 
-        assertThat((String)product.get("name"), is("apple"));
+        assertThat((String) product.get("name"), is("apple"));
+        assertThat((String) product.get("uri"), endsWith("/products/1"));
     }
 
     @Test
