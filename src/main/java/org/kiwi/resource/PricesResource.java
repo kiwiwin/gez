@@ -1,5 +1,6 @@
 package org.kiwi.resource;
 
+import org.glassfish.jersey.server.Uri;
 import org.kiwi.domain.Price;
 import org.kiwi.domain.Product;
 import org.kiwi.json.PriceRefJson;
@@ -37,9 +38,10 @@ public class PricesResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response createPrice(Form form) {
-        priceMapper.createPrice(product, getPriceFromForm(form));
-        return Response.status(201).build();
+    public Response createPrice(Form form, @Context UriInfo uriInfo) {
+        final Price price = getPriceFromForm(form);
+        priceMapper.createPrice(product, price);
+        return Response.status(201).header("location", new PriceRefJson(uriInfo, product, price).getUri()).build();
     }
 
     private Price getPriceFromForm(Form form) {
