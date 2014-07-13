@@ -12,6 +12,9 @@ buildscript {
 apply plugin: 'flyway'
 apply plugin: 'idea'
 apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "org.kiwi.App"
 
 flyway {
     driver = 'org.postgresql.Driver'
@@ -57,6 +60,23 @@ dependencies {
 
 }
 
+
+task uberjar(type: Jar, dependsOn: jar) {
+    classifier = "standalone"
+
+    from files(sourceSets.main.output.classesDir)
+    from files(sourceSets.main.output.resourcesDir)
+
+    from configurations.runtime.asFileTree.files.collect { zipTree(it) }
+
+    exclude("META-INF/*.SF")
+    exclude("META-INF/*.DSA")
+    exclude("META-INF/*.RSA")
+
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+}
 
 
 sourceCompatibility = JavaVersion.VERSION_1_8
