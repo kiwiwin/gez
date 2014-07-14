@@ -20,10 +20,16 @@ public class App {
         return UriBuilder.fromUri("http://localhost/").port(8080).build();
     }
 
-    public static void main(String[] args) throws IOException {
-        final HttpServer server = startServer();
-        System.in.read();
-        server.shutdownNow();
+    public static void main(String[] args) throws IOException, InterruptedException {
+        final HttpServer httpServer = startServer();
+
+        while (true) {
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                httpServer.shutdownNow();
+            }
+        }
     }
 
     private static HttpServer startServer() {
