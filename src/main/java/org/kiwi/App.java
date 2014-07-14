@@ -17,7 +17,7 @@ import java.net.URI;
 public class App {
 
     private static URI getBaseURI() {
-        return UriBuilder.fromUri("http://localhost/").port(8080).build();
+        return UriBuilder.fromUri("http://0.0.0.0/").port(8080).build();
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
